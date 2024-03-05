@@ -94,10 +94,13 @@ function understrap_child_customize_controls_js() {
 add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_controls_js' );
 
 
-if ( ! function_exists('create_real_estate_post_type') ) {
+// Пост-тайпы были сгенерированы при помощи сервиса 
+// https://generatewp.com/
+
+if ( !function_exists( 'register_real_estate_post_type' ) ) {
 
 	// Register Custom Post Type
-	function create_real_estate_post_type() {
+	function register_real_estate_post_type() {
 
 		$labels = array(
 			'name'                  => 'Real Estate',
@@ -127,10 +130,10 @@ if ( ! function_exists('create_real_estate_post_type') ) {
 			'items_list'            => 'Real Estate list',
 			'items_list_navigation' => 'Real Estate list navigation',
 			'filter_items_list'     => 'Filter real estate list',
-	);
+		);
 		$args = array(
-			'label'                 => __( 'real_estate' ),
-			'description'           => __( 'Properties information page.' ),
+			'label'                 => 'Real Estate',
+			'description'           => 'Real Estates information page.',
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'revisions', ),
 			'taxonomies'            => array( 'city' ),
@@ -151,36 +154,36 @@ if ( ! function_exists('create_real_estate_post_type') ) {
 		register_post_type( 'real_estate', $args );
 
 	}
-	add_action( 'init', 'create_real_estate_post_type', 0 );
+	add_action( 'init', 'register_real_estate_post_type', 0 );
 	
 }
 
-if ( ! function_exists('real_estate_type_taxonomy') ) {
+if ( !function_exists( 'register_real_estate_type_taxonomy' ) ) {
 	// Register Custom Taxonomy
-	function real_estate_type_taxonomy() {
+	function register_real_estate_type_taxonomy() {
 
 		$labels = array(
-			'name'                       => _x( 'Real Estate Types', 'Taxonomy General Name' ),
-			'singular_name'              => _x( 'Real Estate Type', 'Taxonomy Singular Name' ),
-			'menu_name'                  => __( 'Real Estate Types' ),
-			'all_items'                  => __( 'All Real Estate Types' ),
-			'parent_item'                => __( 'Parent Real Estate Type' ),
-			'parent_item_colon'          => __( 'Parent Real Estate Type:' ),
-			'new_item_name'              => __( 'New Real Estate Type Name' ),
-			'add_new_item'               => __( 'Add New Real Estate Type' ),
-			'edit_item'                  => __( 'Edit Real Estate Type' ),
-			'update_item'                => __( 'Update Real Estate Type' ),
-			'view_item'                  => __( 'View Real Estate Type' ),
-			'separate_items_with_commas' => __( 'Separate real estate types with commas' ),
-			'add_or_remove_items'        => __( 'Add or remove real estate types' ),
-			'choose_from_most_used'      => __( 'Choose from the most used real estate types' ),
-			'popular_items'              => __( 'Popular Real Estate Types' ),
-			'search_items'               => __( 'Search real estate types' ),
-			'not_found'                  => __( 'Real Estate Types Not Found' ),
-			'no_terms'                   => __( 'No real estate types' ),
-			'items_list'                 => __( 'Real Estate Types list' ),
-			'items_list_navigation'      => __( 'Real Estate Types list navigation' ),
-	);
+			'name'                       => 'Real Estate Types',
+			'singular_name'              => 'Real Estate Type', 
+			'menu_name'                  => 'Real Estate Types',
+			'all_items'                  => 'All Real Estate Types',
+			'parent_item'                => 'Parent Real Estate Type',
+			'parent_item_colon'          => 'Parent Real Estate Type:',
+			'new_item_name'              => 'New Real Estate Type Name',
+			'add_new_item'               => 'Add New Real Estate Type',
+			'edit_item'                  => 'Edit Real Estate Type',
+			'update_item'                => 'Update Real Estate Type',
+			'view_item'                  => 'View Real Estate Type',
+			'separate_items_with_commas' => 'Separate real estate types with commas',
+			'add_or_remove_items'        => 'Add or remove real estate types',
+			'choose_from_most_used'      => 'Choose from the most used real estate types',
+			'popular_items'              => 'Popular Real Estate Types',
+			'search_items'               => 'Search real estate types',
+			'not_found'                  => 'Real Estate Types Not Found',
+			'no_terms'                   => 'No real estate types',
+			'items_list'                 => 'Real Estate Types list',
+			'items_list_navigation'      => 'Real Estate Types list navigation',
+		);
 		$args = array(
 			'labels'                     => $labels,
 			'hierarchical'               => false,
@@ -193,6 +196,124 @@ if ( ! function_exists('real_estate_type_taxonomy') ) {
 		register_taxonomy( 'real_estate_type', array( 'real_estate' ), $args );
 
 	}
-	add_action( 'init', 'real_estate_type_taxonomy', 0 );
+	add_action( 'init', 'register_real_estate_type_taxonomy', 0 );
 
 }
+
+if ( !function_exists( 'register_cities_post_type' ) ) {
+	function register_cities_post_type() {
+		$labels = array(
+			'name'                  => 'Cities',
+			'singular_name'         => 'City',
+			'menu_name'             => 'Cities',
+			'name_admin_bar'        => 'City',
+			'archives'              => 'City Archives',
+			'attributes'            => 'City Attributes',
+			'parent_item_colon'     => 'Parent City:',
+			'all_items'             => 'All Cities',
+			'add_new_item'          => 'Add New City',
+			'add_new'               => 'Add New',
+			'new_item'              => 'New City',
+			'edit_item'             => 'Edit City',
+			'update_item'           => 'Update City',
+			'view_item'             => 'View City',
+			'view_items'            => 'View Cities',
+			'search_items'          => 'Search Cities',
+			'not_found'             => 'No cities found',
+			'not_found_in_trash'    => 'No cities found in Trash',
+			'featured_image'        => 'Featured Image',
+			'set_featured_image'    => 'Set featured image',
+			'remove_featured_image' => 'Remove featured image',
+			'use_featured_image'    => 'Use as featured image',
+			'insert_into_item'      => 'Insert into city',
+			'uploaded_to_this_item' => 'Uploaded to this city',
+			'items_list'            => 'Cities list',
+			'items_list_navigation' => 'Cities list navigation',
+			'filter_items_list'     => 'Filter cities list',
+		);
+		$args = array(
+			'label'                 => 'Cities',
+			'labels'                => $labels,
+			'supports'              => array('title', 'editor', 'thumbnail'),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 5,
+			'menu_icon'             => 'building',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => true,
+			'can_export'            => true,
+			'has_archive'           => true,
+			'exclude_from_search'   => false,
+			'publicly_queryable'    => true,
+			'capability_type'       => 'page'
+		);
+		register_post_type('cities', $args);
+	}
+	add_action('init', 'register_cities_post_type');
+}
+
+
+// Линкуем города и недвижимость
+
+// Добавляем метабокс в сайдбаре для пост тайпа недвижимости
+function add_city_meta_box() {
+	add_meta_box(
+		'city_re_relation',
+		'City',
+		'city_re_relation_callback',
+		'real_estate',
+		'side',
+		'default'
+	);
+}
+add_action( 'add_meta_boxes', 'add_city_meta_box' );
+
+
+// Добавляем коллбэк функцию для метабокса с городами
+function city_re_relation_callback( $post ) {
+	$selected_city = get_post_meta( $post->ID, 'selected_city', true );
+	$cities = get_posts( array(
+		'post_type' => 'cities', 
+		'posts_per_page' => -1
+	) );
+
+	if ( !empty( $cities ) ) :
+		echo '<label for="selected_city">Choose city:</label>';
+
+		if ( is_array( $cities ) ) {
+			echo '<select name="selected_city" id="selected_city">';
+				echo '<option value=""> --- </option>';
+				foreach ($cities as $city) {
+					printf( 
+						'<option value="%1$s" %2$s>%3$s</option>',
+						$city->ID,
+						selected( $selected_city, $city->ID, false ), // https://developer.wordpress.org/reference/functions/selected/
+						$city->post_title
+					);
+				}
+			echo '</select>';
+		}
+
+	endif;
+
+	wp_nonce_field('save_city_re_relation', 'city_re_relation_nonce');
+}
+
+// добавляем экшен который будет линкать город и недвижимость при сохранении недвижимости
+function save_city_re_relation( $post_id ) {
+	if (
+		!isset( $_POST['city_re_relation_nonce'] ) || 
+		!wp_verify_nonce( $_POST['city_re_relation_nonce'], 'save_city_re_relation' )
+	) {
+		return;
+	}
+	
+	if ( isset( $_POST['selected_city'] ) ) { // если поле с городом не пустое - доавляем мету, иначе удаляем ее
+		update_post_meta( $post_id, 'selected_city', sanitize_text_field( $_POST['selected_city'] ) );
+	} else {
+		delete_post_meta( $post_id, 'selected_city' ); 
+	}
+}
+add_action('save_post', 'save_city_re_relation');
