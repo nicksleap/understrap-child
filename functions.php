@@ -132,7 +132,7 @@ if ( ! function_exists('create_real_estate_post_type') ) {
 			'label'                 => __( 'real_estate' ),
 			'description'           => __( 'Properties information page.' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'page-attributes' ),
+			'supports'              => array( 'title', 'editor', 'revisions', ),
 			'taxonomies'            => array( 'city' ),
 			'hierarchical'          => false,
 			'public'                => true,
@@ -183,7 +183,7 @@ if ( ! function_exists('real_estate_type_taxonomy') ) {
 	);
 		$args = array(
 			'labels'                     => $labels,
-			'hierarchical'               => true,
+			'hierarchical'               => false,
 			'public'                     => true,
 			'show_ui'                    => true,
 			'show_admin_column'          => true,
