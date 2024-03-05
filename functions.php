@@ -94,46 +94,46 @@ function understrap_child_customize_controls_js() {
 add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_controls_js' );
 
 
-if ( ! function_exists('create_property_post_type') ) {
+if ( ! function_exists('create_real_estate_post_type') ) {
 
 	// Register Custom Post Type
-	function create_property_post_type() {
+	function create_real_estate_post_type() {
 
 		$labels = array(
-			'name'                  => _x( 'Properties', 'Post Type General Name', 'text_domain' ),
-			'singular_name'         => _x( 'Property', 'Post Type Singular Name', 'text_domain' ),
-			'menu_name'             => __( 'Properties', 'text_domain' ),
-			'name_admin_bar'        => __( 'Property', 'text_domain' ),
-			'archives'              => __( 'Item Archives', 'text_domain' ),
-			'attributes'            => __( 'Item Attributes', 'text_domain' ),
-			'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
-			'all_items'             => __( 'All Items', 'text_domain' ),
-			'add_new_item'          => __( 'Add New Item', 'text_domain' ),
-			'add_new'               => __( 'Add New', 'text_domain' ),
-			'new_item'              => __( 'New Item', 'text_domain' ),
-			'edit_item'             => __( 'Edit Item', 'text_domain' ),
-			'update_item'           => __( 'Update Item', 'text_domain' ),
-			'view_item'             => __( 'View Item', 'text_domain' ),
-			'view_items'            => __( 'View Items', 'text_domain' ),
-			'search_items'          => __( 'Search Item', 'text_domain' ),
-			'not_found'             => __( 'Not found', 'text_domain' ),
-			'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-			'featured_image'        => __( 'Featured Image', 'text_domain' ),
-			'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
-			'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
-			'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
-			'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
-			'uploaded_to_this_item' => __( 'Uploaded to this item', 'text_domain' ),
-			'items_list'            => __( 'Items list', 'text_domain' ),
-			'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
-			'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
-		);
+			'name'                  => 'Real Estate',
+			'singular_name'         => 'Real Estate',
+			'menu_name'             => 'Real Estate',
+			'name_admin_bar'        => 'Real Estate',
+			'archives'              => 'Real Estate Archives',
+			'attributes'            => 'Real Estate Attributes',
+			'parent_item_colon'     => 'Parent Real Estate:',
+			'all_items'             => 'All Real Estate',
+			'add_new_item'          => 'Add New Real Estate',
+			'add_new'               => 'Add New',
+			'new_item'              => 'New Real Estate',
+			'edit_item'             => 'Edit Real Estate',
+			'update_item'           => 'Update Real Estate',
+			'view_item'             => 'View Real Estate',
+			'view_items'            => 'View Real Estate',
+			'search_items'          => 'Search Real Estate',
+			'not_found'             => 'Real Estate Not found',
+			'not_found_in_trash'    => 'Real Estate Not found in Trash',
+			'featured_image'        => 'Featured Image',
+			'set_featured_image'    => 'Set featured image',
+			'remove_featured_image' => 'Remove featured image',
+			'use_featured_image'    => 'Use as featured image',
+			'insert_into_item'      => 'Insert into real estate',
+			'uploaded_to_this_item' => 'Uploaded to this real estate',
+			'items_list'            => 'Real Estate list',
+			'items_list_navigation' => 'Real Estate list navigation',
+			'filter_items_list'     => 'Filter real estate list',
+	);
 		$args = array(
-			'label'                 => __( 'Property', 'text_domain' ),
-			'description'           => __( 'Properties information page.', 'text_domain' ),
+			'label'                 => __( 'real_estate' ),
+			'description'           => __( 'Properties information page.' ),
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions', 'page-attributes' ),
-			'taxonomies'            => array( 'region', 'city' ),
+			'taxonomies'            => array( 'city' ),
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
@@ -148,12 +148,51 @@ if ( ! function_exists('create_property_post_type') ) {
 			'publicly_queryable'    => true,
 			'capability_type'       => 'page',
 		);
-		register_post_type( 'property', $args );
+		register_post_type( 'real_estate', $args );
 
 	}
-	add_action( 'init', 'create_property_post_type', 0 );
+	add_action( 'init', 'create_real_estate_post_type', 0 );
 	
 }
 
+if ( ! function_exists('real_estate_type_taxonomy') ) {
+	// Register Custom Taxonomy
+	function real_estate_type_taxonomy() {
 
+		$labels = array(
+			'name'                       => _x( 'Real Estate Types', 'Taxonomy General Name' ),
+			'singular_name'              => _x( 'Real Estate Type', 'Taxonomy Singular Name' ),
+			'menu_name'                  => __( 'Real Estate Types' ),
+			'all_items'                  => __( 'All Real Estate Types' ),
+			'parent_item'                => __( 'Parent Real Estate Type' ),
+			'parent_item_colon'          => __( 'Parent Real Estate Type:' ),
+			'new_item_name'              => __( 'New Real Estate Type Name' ),
+			'add_new_item'               => __( 'Add New Real Estate Type' ),
+			'edit_item'                  => __( 'Edit Real Estate Type' ),
+			'update_item'                => __( 'Update Real Estate Type' ),
+			'view_item'                  => __( 'View Real Estate Type' ),
+			'separate_items_with_commas' => __( 'Separate real estate types with commas' ),
+			'add_or_remove_items'        => __( 'Add or remove real estate types' ),
+			'choose_from_most_used'      => __( 'Choose from the most used real estate types' ),
+			'popular_items'              => __( 'Popular Real Estate Types' ),
+			'search_items'               => __( 'Search real estate types' ),
+			'not_found'                  => __( 'Real Estate Types Not Found' ),
+			'no_terms'                   => __( 'No real estate types' ),
+			'items_list'                 => __( 'Real Estate Types list' ),
+			'items_list_navigation'      => __( 'Real Estate Types list navigation' ),
+	);
+		$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => true,
+			'public'                     => true,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => true,
+			'show_tagcloud'              => true,
+		);
+		register_taxonomy( 'real_estate_type', array( 'real_estate' ), $args );
 
+	}
+	add_action( 'init', 'real_estate_type_taxonomy', 0 );
+
+}
