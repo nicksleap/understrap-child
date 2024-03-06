@@ -249,7 +249,7 @@ if ( !function_exists( 'register_cities_post_type' ) ) {
 			'publicly_queryable'    => true,
 			'capability_type'       => 'page'
 		);
-		register_post_type('cities', $args);
+		register_post_type('city', $args);
 	}
 	add_action('init', 'register_cities_post_type');
 }
@@ -275,7 +275,7 @@ add_action( 'add_meta_boxes', 'add_city_meta_box' );
 function city_re_relation_callback( $post ) {
 	$selected_city = get_post_meta( $post->ID, 'selected_city', true );
 	$cities = get_posts( array(
-		'post_type' => 'cities', 
+		'post_type' => 'city', 
 		'posts_per_page' => -1
 	) );
 
@@ -297,19 +297,10 @@ function city_re_relation_callback( $post ) {
 		}
 
 	endif;
-
-	wp_nonce_field('save_city_re_relation', 'city_re_relation_nonce');
 }
 
 // добавляем экшен который будет линкать город и недвижимость при сохранении недвижимости
 function save_city_re_relation( $post_id ) {
-	if (
-		!isset( $_POST['city_re_relation_nonce'] ) || 
-		!wp_verify_nonce( $_POST['city_re_relation_nonce'], 'save_city_re_relation' )
-	) {
-		return;
-	}
-	
 	if ( isset( $_POST['selected_city'] ) ) { // если поле с городом не пустое - доавляем мету, иначе удаляем ее
 		update_post_meta( $post_id, 'selected_city', sanitize_text_field( $_POST['selected_city'] ) );
 	} else {
@@ -317,3 +308,11 @@ function save_city_re_relation( $post_id ) {
 	}
 }
 add_action('save_post', 'save_city_re_relation');
+
+
+// Удаляем ссылку из excerpt
+add_filter( 'excerpt_more', 'remove_excerpt_more_filter' );
+function remove_excerpt_more_filter( $more ){
+	global $post;
+	return '';
+}
