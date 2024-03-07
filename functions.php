@@ -8,6 +8,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+require_once __DIR__ . '/vendor/autoload.php';
+use Respect\Validation\Validator as v;
 
 
 /**
@@ -49,6 +51,13 @@ function theme_enqueue_styles() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	wp_localize_script( 'child-understrap-scripts', 'ns_ajax',
+		array(
+			'url' => admin_url('admin-ajax.php'),
+			'nonce' => wp_create_nonce('ns_ajax-nonce')
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
 
@@ -315,4 +324,151 @@ add_filter( 'excerpt_more', 'remove_excerpt_more_filter' );
 function remove_excerpt_more_filter( $more ){
 	global $post;
 	return '';
+}
+
+// Оброботчик аякс запросов
+if( wp_doing_ajax() ){
+	add_action( 'wp_ajax_create_re', 'create_re_callback' );
+	add_action( 'wp_ajax_nopriv_create_re', 'create_re_callback' );
+}
+
+function create_re_form_validate() {
+
+	$errors = [];
+	
+	if ( empty( $_POST['title'] ) ) {
+		$errors[] = 'Name of the Real Estate is reqired';
+	}
+
+	if ( v::NumericVal()->validate($_POST['price']) == false ) {
+		$errors[] = 'Price value is not valid';
+	}
+
+	if ( empty( $_POST['address'] ) ) {
+		$errors[] = 'address is reqired';
+	}
+
+	if ( v::NumericVal()->validate($_POST['area']) == false ) {
+		$errors[] = 'Area value is not valid';
+	}
+
+	if ( v::NumericVal()->validate($_POST['living_area']) == false ) {
+		$errors[] = 'Living Area value is not valid';
+	}
+
+	if ( v::NumericVal()->validate($_POST['floor']) == false ) {
+		$errors[] = 'Floor value is not valid';
+	}
+
+	if ( !empty( $errors ) ) {
+		wp_send_json_error( $errors );
+	}
+
+	return true;
+
+}
+
+
+function create_re_callback() {
+	
+	if( ! wp_verify_nonce( $_POST['nonce_code'], 'ns_ajax-nonce' ) ) {
+		wp_send_json_error( [ wp_verify_nonce( $_POST['nonce_code'], 'ns_ajax-nonce' ) ] );
+	};
+
+	create_re_form_validate();
+
+	$success = [];
+
+	$parms = array(
+		'post_author'			=> 1,
+		'post_status'			=> 'publish',
+		'post_title'			=> sanitize_text_field( $_POST['title'] ),
+		'post_content'		=> $_POST['post_content'],
+		'post_type'				=> 'real_estate',
+	);
+
+	$post_id = wp_insert_post( $parms, true );
+
+	if( is_wp_error( $post_id ) ){
+		wp_send_json_error( $post_id->get_error_message() );
+	}
+
+	$success['post_id'] = $post_id;
+
+	if ( function_exists('update_field') ) :
+		if ( !empty( $_POST['price'] ) ) {
+			update_field( 'price', $_POST['price'], $post_id );
+		}
+
+		if ( !empty( $_POST['address'] ) ) {
+			update_field( 'address', $_POST['address'], $post_id );
+		}
+	
+		if ( !empty( $_POST['area'] ) ) {
+			update_field( 'area', $_POST['area'], $post_id );
+		}
+	
+		if ( !empty( $_POST['living_area'] ) ) {
+			update_field( 'living_area', $_POST['price'], $post_id );
+		}
+	
+		if ( !empty( $_POST['floor'] ) ) {
+			update_field( 'floor', $_POST['floor'], $post_id );
+		}
+
+	endif;
+
+
+	if ( !empty( $_FILES ) ) {
+
+		$upload_dir = wp_upload_dir();
+		$attachments = [];
+		
+		for ($i=0; $i < count($_FILES['photos']['name']); $i++) { 
+			
+			$filename = wp_unique_filename($upload_dir['path'], $_FILES['photos']['name'][$i]);
+			$uploadfile = $upload_dir['path'] .'/'. $filename;
+
+			$filetype = wp_check_filetype( basename( $filename ), null );
+
+			if (move_uploaded_file($_FILES['photos']['tmp_name'][$i], $uploadfile) ) {
+				$attachment_id = wp_insert_attachment(
+					array(
+						'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+						'post_content' => '',
+						'post_status' => 'inherit',
+						'post_mime_type' => $filetype['type']
+					),
+					$uploadfile
+				);
+				
+				$attachments[] = $attachment_id;
+				
+			} else {
+				$phpFileUploadErrors = array(
+					0 => 'There is no error, the file uploaded with success',
+					1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+					2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+					3 => 'The uploaded file was only partially uploaded',
+					4 => 'No file was uploaded',
+					6 => 'Missing a temporary folder',
+					7 => 'Failed to write file to disk.',
+					8 => 'A PHP extension stopped the file upload.',
+				);
+				wp_send_json_error([
+					'message' => $phpFileUploadErrors[$_FILES['photos']['error']],
+					'error' => $_FILES['photos']['error']
+				]);
+			};
+		}
+		update_field('photos', $attachments, $post_id);
+
+		$success = array_merge($success, [
+			'message' => "Congratulations! File Uploaded Successfully.",
+			'files' => $attachments,
+		]);
+
+	}
+
+	wp_send_json_success( $success );
 }
