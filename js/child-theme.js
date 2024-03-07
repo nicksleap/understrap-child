@@ -6762,10 +6762,9 @@
 	      const formData = new FormData(form);
 	      formData.append('nonce_code', ns_ajax.nonce);
 	      postData(ns_ajax.url, formData).then(response => {
-	        if (response.success !== true) {
+	        if (response.data.html !== true) {
 	          console.log(response);
-	        } else {
-	          console.log(response);
+	          form.querySelector('.form-response').innerHTML = response.data.html;
 	        }
 	      }).catch(error => {
 	        console.error(error);
