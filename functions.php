@@ -402,7 +402,7 @@ function create_re_callback() {
 		'post_author'			=> 1,
 		'post_status'			=> 'publish',
 		'post_title'			=> sanitize_text_field( $_POST['title'] ),
-		'post_content'		=> $_POST['post_content'],
+		'post_content'		=> $_POST['content'],
 		'post_type'				=> 'real_estate',
 	);
 
@@ -438,6 +438,8 @@ function create_re_callback() {
 		if ( !empty( $_POST['floor'] ) ) {
 			update_field( 'floor', $_POST['floor'], $post_id );
 		}
+
+		// update_post_meta( $post_id, 'selected_city', sanitize_text_field( $_POST['selected_city'] ) );
 
 	endif;
 
