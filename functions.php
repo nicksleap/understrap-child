@@ -8,7 +8,9 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+require_once __DIR__ . '/inc/acf-import.php' ;
 require_once __DIR__ . '/vendor/autoload.php';
+
 use Respect\Validation\Validator as v;
 
 
