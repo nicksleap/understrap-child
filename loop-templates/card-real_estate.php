@@ -30,6 +30,11 @@
           printf('<small>%s : <b>%sm<sup>2</sup></b></small><br/>', __('Area'), $area);
         }
 
+        $city = get_post_meta( $post->ID, 'selected_city', true );
+        if (!empty($city)) {
+          printf('<small>%s : <b>%s</b></small><br/>', __('City'), get_the_title( $city ));
+        }
+
         $address = get_field('address');
         if (!empty($address)) {
           printf('<small>%s : <b>%s</b></small><br/>', __('Adress'), $address);
