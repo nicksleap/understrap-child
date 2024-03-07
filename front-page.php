@@ -30,9 +30,7 @@ $container = get_theme_mod( 'understrap_container_type' );
       }
 
       wp_reset_postdata();
-    ?>
-
-    <?php  
+     
       $re = get_posts( array(
         'post_type' => 'real_estate', 
         'posts_per_page' => 10
@@ -56,4 +54,5 @@ $container = get_theme_mod( 'understrap_container_type' );
 </div><!-- #single-wrapper -->
 
 <?php
+get_template_part( 'template-parts/form', 'add_re' );
 get_footer();

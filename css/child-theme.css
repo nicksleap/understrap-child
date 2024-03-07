@@ -14964,6 +14964,12 @@ figure.woocommerce-product-gallery__wrapper {
   display: block;
 }
 
+.hero {
+  min-height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #0d6efd;
