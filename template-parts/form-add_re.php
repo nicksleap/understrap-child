@@ -13,7 +13,32 @@
       <label for="price" class="form-label">Price</label>
       <input require type="text" name="price" class="form-control" id="price">
     </div>
-    <div class="col-md-12">
+    <div class="col-md-3">
+      <?php
+        $cities = get_posts( array(
+          'post_type' => 'city', 
+          'posts_per_page' => -1
+        ) );
+      
+        if ( !empty( $cities ) ) :
+          echo '<label class="form-label" for="selected_city">Choose city:</label>';
+      
+          if ( is_array( $cities ) ) {
+            echo '<select name="selected_city" id="selected_city" class="form-select" >';
+              foreach ($cities as $city) {
+                printf( 
+                  '<option value="%1$s">%2$s</option>',
+                  $city->ID,
+                  $city->post_title
+                );
+              }
+            echo '</select>';
+          }
+      
+        endif;
+      ?>
+    </div>
+    <div class="col-md-9">
       <label for="address" class="form-label">Address</label>
       <input require type="text" name="address" class="form-control" id="address">
     </div>
