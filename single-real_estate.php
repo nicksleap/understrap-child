@@ -16,7 +16,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 	<div class="<?php echo esc_attr( $container ); ?>" id="content" tabindex="-1">
     <?php 
-      printf('<h1>%s</h1>', get_the_title());
+      the_title('<h1>', '</h1>');
 
       if (function_exists( 'get_field' )):
         $photos = get_field('photos');
@@ -57,8 +57,6 @@ $container = get_theme_mod( 'understrap_container_type' );
         if (!empty($floor)) {
           printf('<p>%s : <b>%s</b></p>', __('Floor'), $floor);
         }
-
-
 
       endif;
     ?>
