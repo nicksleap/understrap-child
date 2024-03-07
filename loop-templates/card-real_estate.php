@@ -2,8 +2,11 @@
 <div class="col">
   <div class="card">
     <?php
-      if ( has_post_thumbnail() ) {
-        echo get_the_post_thumbnail( $post->ID, 'full', array(
+      $photos = get_field( 'photos' );
+
+      
+      if ( !empty( $photos ) && is_array($photos) ) {
+        echo wp_get_attachment_image( $photos[0]['ID'], 'full', array(
           'loading' => 'lazy',
           'class'   => 'card-img-top'
         ) );
