@@ -16,23 +16,29 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 	<div class="<?php echo esc_attr( $container ); ?>" id="content" tabindex="-1">
     <?php 
-      the_title('<h1>', '</h1>');
 
       if (function_exists( 'get_field' )):
         $photos = get_field('photos');
         if (!empty($photos) && is_array($photos)) {
-          echo '<div class="galery">';
+          echo '<div class="galery row">';
           foreach($photos as $photo) {
             printf(
-              '<div class="galery-item">%s</div>',
-              wp_get_attachment_image( $photo['ID'], 'large', false, [
-                'loading' => 'lazy'
+              '<div class="galery-item col-md-3">%s</div>',
+              wp_get_attachment_image( $photo['ID'], 'full', false, [
+                'loading' => 'lazy',
+                'class'   => 'rounded img',
+                'width'   => null,
+                'height'  => null
               ] )
             );
           }
           echo '</div>';
         }
 
+        the_title('<h1>', '</h1>');
+        echo '<hr>';
+        the_content();
+        echo '<hr>';
         $area = get_field( 'area' );
         if (!empty($area)) {
           printf('<p>%s : <b>%sm<sup>2</sup></b></p>', __('Area'), $area);
