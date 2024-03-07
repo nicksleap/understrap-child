@@ -39,6 +39,17 @@ $container = get_theme_mod( 'understrap_container_type' );
         echo '<hr>';
         the_content();
         echo '<hr>';
+        
+        $city = get_post_meta( $post->ID, 'selected_city', true );
+        if (!empty($city)) {
+          printf('<p>%s : <b>%s</b></p>', __('City'), get_the_title( $city ));
+        }
+
+        $address = get_field('address');
+        if (!empty($address)) {
+          printf('<p>%s : <b>%s</b></p>', __('Adress'), $address);
+        }
+
         $area = get_field( 'area' );
         if (!empty($area)) {
           printf('<p>%s : <b>%sm<sup>2</sup></b></p>', __('Area'), $area);
@@ -47,11 +58,6 @@ $container = get_theme_mod( 'understrap_container_type' );
         $price = get_field('price');
         if (!empty($price)) {
           printf('<p>%s : <b>%s</b></p>', __('Price'), $price);
-        }
-
-        $address = get_field('address');
-        if (!empty($address)) {
-          printf('<p>%s : <b>%s</b></p>', __('Adress'), $address);
         }
 
         $living_area = get_field('living_area');
