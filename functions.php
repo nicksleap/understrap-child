@@ -361,7 +361,19 @@ function create_re_form_validate() {
 	}
 
 	if ( !empty( $errors ) ) {
-		wp_send_json_error( $errors );
+
+		$html = '<div class="alert alert-warning">';
+
+		$html.= '<p>One or more fields are not valid</p><ul>';
+
+		foreach($errors as $error) {
+			$html.= sprintf('<li>%s</li>', $error);
+		}
+		$html.= '</div>';
+ 		wp_send_json_error( [
+			'html' => $html,
+			'errors' => $errors
+		] );
 	}
 
 	return true;
@@ -372,7 +384,12 @@ function create_re_form_validate() {
 function create_re_callback() {
 	
 	if( ! wp_verify_nonce( $_POST['nonce_code'], 'ns_ajax-nonce' ) ) {
-		wp_send_json_error( [ wp_verify_nonce( $_POST['nonce_code'], 'ns_ajax-nonce' ) ] );
+		wp_send_json_error( [
+			'html' => sprintf(
+				'<div class="alert alert-warning">%s</div>', 
+				wp_verify_nonce( $_POST['nonce_code'], 'ns_ajax-nonce' )
+			) 
+		] );
 	};
 
 	create_re_form_validate();
@@ -390,7 +407,11 @@ function create_re_callback() {
 	$post_id = wp_insert_post( $parms, true );
 
 	if( is_wp_error( $post_id ) ){
-		wp_send_json_error( $post_id->get_error_message() );
+		wp_send_json_error( 
+			[
+				'html' => sprintf('<div class="alert alert-warning">%s</div>', $post_id->get_error_message())
+			]
+		);
 	}
 
 	$success['post_id'] = $post_id;
@@ -457,7 +478,8 @@ function create_re_callback() {
 				);
 				wp_send_json_error([
 					'message' => $phpFileUploadErrors[$_FILES['photos']['error']],
-					'error' => $_FILES['photos']['error']
+					'error' => $_FILES['photos']['error'],
+					'html' => sprintf('<div class="alert alert-warning">%s</div>', $phpFileUploadErrors[$_FILES['photos']['error']])
 				]);
 			};
 		}
@@ -466,6 +488,7 @@ function create_re_callback() {
 		$success = array_merge($success, [
 			'message' => "Congratulations! File Uploaded Successfully.",
 			'files' => $attachments,
+			'html' => sprintf('<div class="alert alert-success">Congratulations! Information has been added, please <a href="%s">follow the link to check</a></div>', get_the_permalink( $post_id ))
 		]);
 
 	}
