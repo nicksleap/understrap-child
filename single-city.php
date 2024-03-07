@@ -19,7 +19,7 @@ if ( has_post_thumbnail() ) {
 }
 
 ?>
-<div class="hero hero--city" style="<?php printf( 'background: url(\'%s\') center no-repeat;', $hero_bg_url )?>"></div>
+<div class="hero hero--city" style="<?php printf( 'background-image: url(\'%s\');', $hero_bg_url )?>"></div>
 <div class="wrapper" id="single-wrapper">
 	<div class="<?php echo esc_attr( $container ); ?>" id="content" tabindex="-1">
     <?php 
@@ -37,7 +37,6 @@ if ( has_post_thumbnail() ) {
           )
         ),
         'posts_per_page' => 10,
-        'paged'          => ( get_query_var('paged') ) ? get_query_var('paged') : 1 
       );
 
       $res = get_posts($args);
@@ -51,14 +50,6 @@ if ( has_post_thumbnail() ) {
         echo '</div>'; // .row
       endif;
       
-
-      $big = 999999999;
-      echo paginate_links(array(
-        'base'    => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-        'format'  => '?paged=%#%',
-        'current' => max(1, get_query_var('paged')),
-        'total'   => $wp_query->max_num_pages
-      ));
 
       wp_reset_postdata();
 
