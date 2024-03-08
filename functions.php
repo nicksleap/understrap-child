@@ -197,7 +197,7 @@ if ( !function_exists( 'register_real_estate_type_taxonomy' ) ) {
 		);
 		$args = array(
 			'labels'                     => $labels,
-			'hierarchical'               => false,
+			'hierarchical'               => true,
 			'public'                     => true,
 			'show_ui'                    => true,
 			'show_admin_column'          => true,
@@ -362,6 +362,10 @@ function create_re_form_validate() {
 		$errors[] = 'Floor value is not valid';
 	}
 
+	if ( empty( $_POST['type_of_re'] ) ) {
+		$error[] = 'Type of Real Estate is reqired';
+	}
+
 	if ( !empty( $errors ) ) {
 
 		$html = '<div class="alert alert-warning">';
@@ -439,12 +443,15 @@ function create_re_callback() {
 			update_field( 'floor', $_POST['floor'], $post_id );
 		}
 
+		wp_set_object_terms($post_id, intval( $_POST['type_of_re'] ), 'real_estate_type' );
 		// update_post_meta( $post_id, 'selected_city', sanitize_text_field( $_POST['selected_city'] ) );
 
 	endif;
 
-
-	if ( !empty( $_FILES ) ) {
+	if ( 
+		isset( $_FILES ) && 
+		!empty( $_FILES['file']['name'] )
+	) {
 
 		$upload_dir = wp_upload_dir();
 		$attachments = [];
@@ -488,14 +495,13 @@ function create_re_callback() {
 			};
 		}
 		update_field('photos', $attachments, $post_id);
-
-		$success = array_merge($success, [
-			'message' => "Congratulations! File Uploaded Successfully.",
-			'files' => $attachments,
-			'html' => sprintf('<div class="alert alert-success">Congratulations! Information has been added, please <a href="%s">follow the link to check</a></div>', get_the_permalink( $post_id ))
-		]);
-
+		$success['files'] = $attachments;
 	}
+
+	$success = array_merge($success, [
+		'message' => "Congratulations! File Uploaded Successfully.",
+		'html' => sprintf('<div class="alert alert-success">Congratulations! Information has been added, please <a href="%s">follow the link to check</a></div>', get_the_permalink( $post_id ))
+	]);
 
 	wp_send_json_success( $success );
 }
