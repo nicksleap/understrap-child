@@ -28,6 +28,9 @@ function submitFrom() {
             console.log(response);
             form.querySelector('.form-response').innerHTML = response.data.html;
           }
+          if (response.success == true) {
+            form.reset()
+          }
         })
         .catch((error) => {
           console.error(error);
