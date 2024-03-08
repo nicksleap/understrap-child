@@ -450,7 +450,7 @@ function create_re_callback() {
 
 	if ( 
 		isset( $_FILES ) && 
-		!empty( $_FILES['file']['name'] )
+		!empty( $_FILES['photos']['name'] )
 	) {
 
 		$upload_dir = wp_upload_dir();
