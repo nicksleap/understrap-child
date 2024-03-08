@@ -71,6 +71,17 @@ $container = get_theme_mod( 'understrap_container_type' );
         }
 
       endif;
+
+      $real_estate_type = get_the_terms($post_id, 'real_estate_type');
+
+      if ($real_estate_type && !is_wp_error($real_estate_type)) {
+        echo 'Type of Real Estate';
+        echo '<ul>';
+        foreach ($real_estate_type as $tax) {
+          printf('<li>%s</li>', $tax->name) ;
+        }
+        echo '</ul>';
+      }
     ?>
 	</div><!-- #content -->
 
