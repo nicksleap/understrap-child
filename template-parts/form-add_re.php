@@ -46,7 +46,30 @@
       <label for="content" class="form-label">Short description (optional)</label>
       <textarea type="text" name="content" class="form-control" id="content"></textarea>
     </div>
-    
+    <div class="md-12">
+      <label for="">Type of Real Estate</label> <br>
+      <?php
+        $types = get_terms( array(
+          'taxonomy' => 'real_estate_type',
+          'hide_empty' => false,
+        ) );
+      
+        foreach ($types as $i => $type) {
+          echo '<div class="form-check form-check-inline">';
+          printf(
+            '<input class="form-check-input" type="radio" name="type_of_re" id="type_of_re%1$s" value="%2$s">',
+            $i,
+            $type->term_id
+          );
+          printf(
+            '<label class="form-check-label" for="type_of_re%1$s">%2$s</label>', 
+            $i,
+            $type->name
+          );
+          echo '</div>';
+        }
+      ?>
+    </div>
     <div class="col-md-4">
       <label for="area" class="form-label">Area</label>
       <input type="text" name="area" class="form-control" id="area">
